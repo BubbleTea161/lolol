@@ -1,13 +1,14 @@
 import pygame
 import random
-
+import math
 # --- Настройки ---
 WIDTH, HEIGHT = 1920, 1080
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RADIUS = 20
 GAP = 15
-FONT_NAME = "arial"
+FONT_NAME = "comic_sans"
 FPS = 60
 
 WORDS = ["ЛИНЕЙКА", "ЗАРЯДНИК", "РЕАЛЬНОСТЬ", "ВСЕЛЕННАЯ", "ТЕРМОС", "ДЕМПФЕР", "РЕЗОНАТОР","ЭКСТРАСЕНС", "НАКАЛИВАНИЕ", "ХАМБАКЕ"]
@@ -17,7 +18,14 @@ win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Виселица")
 clock = pygame.time.Clock()
 
-def draw_text(text, size, color, x, y, center=True):
+def draw_end():
+    pygame.draw.rect(win, (0,0,255), (WIDTH/3,HEIGHT/4,500,500))
+    pygame.draw.circle(win, BLACK, (960,HEIGHT/2), 200, 3)
+    pygame.draw.circle(win, WHITE, (960,HEIGHT/2), 197)
+    pygame.draw.line(win, BLACK, [800,400],[800,480], 3)
+    pygame.draw.line(win, BLACK, [900,400],[900,480], 3)
+    pygame.draw.arc(win,BLACK, (700,370,300,300), math.pi, math.pi*2, 3)
+def draw_text(text,size,color,x,y,center=True):
     font = pygame.font.SysFont(FONT_NAME, size)
     text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect()
@@ -26,7 +34,6 @@ def draw_text(text, size, color, x, y, center=True):
     else:
         text_rect.topleft = (x, y)
     win.blit(text_surface, text_rect)
-
 def draw_hangman(status):
     pygame.draw.line(win, BLACK, (100, 500), (300, 500), 5)
     pygame.draw.line(win, BLACK, (200, 500), (200, 100), 5)
@@ -118,6 +125,8 @@ while running:
                         check_game_over()
 
     if game_over:
+        draw_end()
+        pygame.display.update()
         pygame.time.delay(1000)
         if won:
             score += 1
